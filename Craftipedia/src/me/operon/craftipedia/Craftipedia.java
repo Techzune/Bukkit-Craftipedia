@@ -11,12 +11,12 @@ import org.bukkit.entity.Player;
 
 public class Craftipedia extends JavaPlugin {
 	public static String configVersion = "2.0"; //Version of Config in Use
-	Logger log = Logger.getLogger("Minecraft"); //Console
+	Logger log = Logger.getLogger("Minecraft"); //Get the console
 	protected FileConfiguration config;
 	public void onEnable() { //On Plugin Enable
 		config = getConfig();
 		if (config.getString("config.configversion") == null) { //Checks if the "configversion" config is not there.
-			
+
 			boolean generated;
 			try {
 				genConfig(); //Generate a new config if it isn't there.
@@ -24,7 +24,7 @@ public class Craftipedia extends JavaPlugin {
 			} catch (IOException e) {
 				log.info("[Craftipedia] ERROR: COULD NOT GENERATE NEW CONFIG!"); //Error
 				log.info("[Craftipedia] If you reloaded, please restart your server.");
-				generated = false;
+				generated = false; //Say it failed to generate.
 			}
 			if (generated == true) { //If the config was generated, tell that it was generated.
 				log.info("[Craftipedia] Config Generated");
@@ -35,16 +35,16 @@ public class Craftipedia extends JavaPlugin {
 				log.info("[Craftipedia] Generating new config...");
 				log.info("[Craftipedia] Backing Up Config...");
 				boolean backedup;
-				try {
-					backupConfig();
-					backedup = true;
+				try { // Attempt to back up the configuration.
+					backupConfig(); //Back it up.
+					backedup = true; //Say it succeeded.
 				} catch (IOException e) {
 					log.info("[Craftipedia] ERROR: COULD NOT BACKUP!");
-					backedup = false;
+					backedup = false; //Say it failed.
 				}
 				log.info("[Craftipedia] Generating New Config;");
 				if (backedup) {
-					try {
+					try { //Attempt to generate a new config.
 						genConfig();
 					} catch (IOException e) {
 						log.info("[Craftipedia] ERORR: COULD NOT GENERATE NEW CONFIG!");
@@ -61,9 +61,9 @@ public class Craftipedia extends JavaPlugin {
 		FileWriter out = new FileWriter(outfile); //Opens a writer to write to the config file.
 		FileReader in = new FileReader(infile); //Opens a reader to read the input config file.
 		int c;
-		while ((c = in.read()) != -1)
+		while ((c = in.read()) != -1) //Reads the file and outputs each line.
 			out.write(c);
-		in.close();
+		in.close(); //Closes the reader and writer.
 		out.close();
 	}
 	public void genConfig() throws IOException { //Generates the configuration.
@@ -73,18 +73,18 @@ public class Craftipedia extends JavaPlugin {
 		}
 		File coutfile = new File("plugins" + File.separator + getDescription().getName() + File.separator + "config.yml"); //Destination of Config File
 		FileWriter cout = new FileWriter(coutfile); //Opens a writer to write to the config file.
-		InputStreamReader cin = new InputStreamReader(this.getClass().getResourceAsStream("customrecipes.yml") ); //
+		InputStreamReader cin = new InputStreamReader(this.getClass().getResourceAsStream("customrecipes.yml") ); //Opens a reader to read the default config.
 		int cc;
-		while ((cc = cin.read()) != -1)
+		while ((cc = cin.read()) != -1) //Same as before.
 			cout.write(cc);
 		cin.close();
 		cout.close();
 	}
 	//Handles when a player says a command\\
-	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) { //On a command:
 		if (cmd.getName().equalsIgnoreCase("craftipedia")) { //Player says /craftipedia
 			if (sender.hasPermission("craftipedia.ver")) { //Checks for permission.
-				PluginDescriptionFile pdfile = getDescription();
+				PluginDescriptionFile pdfile = getDescription(); // Get plugin.yml
 				sender.sendMessage("Craftipedia is running version " + pdfile.getVersion()); //Sends the player the version of Craftipedia.
 			} else {
 				sender.sendMessage(ChatColor.RED + "Sorry, You do not have permission to use Craftipedia."); //Player does not have permission.
@@ -97,11 +97,11 @@ public class Craftipedia extends JavaPlugin {
 					sender.sendMessage(ChatColor.RED + "Please enter an item or block."); //No Item/Block Requested
 				} else { //Checks if the player gave an item name.
 					if (args.length > 1) { //If there are more than 1 arguments, they will be combined.
-						for (int i=1; i!=args.length; i++) {
+						for (int i=1; i!=args.length; i++) { //For every extra argument, combine it with the first one.
 							args[0] = (args[0] + args[i]);
 						}
 					}
-					if (sender.getName().equals("CONSOLE")) {
+					if (sender.getName().equals("CONSOLE")) { //If the sender is the console.
 						log.info("[Craftipedia] Craftipedia is not compatible with the console. Sorry!");
 					} else {
 						sendRecipe(sender, cmd, commandLabel, args); //Sends the recipe (See Below)
@@ -115,7 +115,7 @@ public class Craftipedia extends JavaPlugin {
 		return false;
 	}
 	//Recipe Sending - Sends the player the recipe\\
-	public void sendRecipe(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+	public void sendRecipe(CommandSender sender, Command cmd, String commandLabel, String[] args) { //Sends the recipe to the player.
 		Player player = (Player) sender; //Gets the player of the sender.
 		/* Recipe Template
 		if (args[0].equalsIgnoreCase("")) {
@@ -131,7 +131,7 @@ public class Craftipedia extends JavaPlugin {
     	}
 		 */
 		int r = 0;
-		if (args[0].equalsIgnoreCase("reload")) { //Reloads the config.
+		if (args[0].equalsIgnoreCase("reload")) { //Reloads the config [THIS IS BROKEN (I THINK) ] - Techzune
 			reloadConfig();
 			getConfig();
 			sender.sendMessage(ChatColor.AQUA + "[Craftipedia]:" + ChatColor.WHITE + " Reloaded");
@@ -146,7 +146,7 @@ public class Craftipedia extends JavaPlugin {
 		}
 		//Define Recipes:
 		//Custom Recipes\\
-		if (config.getString("recipes." + args[0].toLowerCase() + ".need") != null && config.getString("config.customcraftingrecipes").equals("true")) {
+		if (config.getString("recipes." + args[0].toLowerCase() + ".need") != null && config.getString("config.customcraftingrecipes").equals("true")) { //If that recipe exists in the custom recipes, send it.
 			sender.sendMessage(ChatColor.AQUA + "----------Craftipedia----------");
 			sender.sendMessage(ChatColor.GREEN + "You will need " + config.getString("recipes." + args[0] + ".need"));
 			sender.sendMessage(ChatColor.GOLD + config.getString("recipes." + args[0] + ".row0"));
@@ -161,14 +161,14 @@ public class Craftipedia extends JavaPlugin {
 			sender.sendMessage(ChatColor.AQUA + "-----------------------------");
 			r = 1;
 		}
-		if (config.getString("frecipes." + args[0].toLowerCase()) != null && config.getString("config.customfurnacerecipes").equals("true")) {
+		if (config.getString("frecipes." + args[0].toLowerCase()) != null && config.getString("config.customfurnacerecipes").equals("true")) { //Same as above.
 			sender.sendMessage(ChatColor.AQUA + "----------Craftipedia----------");
 			sender.sendMessage(ChatColor.GOLD + config.getString("frecipes." + args[0]));
 			sender.sendMessage(ChatColor.AQUA + "-----------------------------");
 			r = 1;
 		}
 		//Tools\\
-		if (r != 1) {
+		if (r != 1) { //Checks to see if any of the custom recipes existed, if not, check if they are vanilla.
 			if (args[0].equalsIgnoreCase("woodenpickaxe") || args[0].equalsIgnoreCase("woodenpick") || args[0].equalsIgnoreCase("woodpickaxe") || args[0].equalsIgnoreCase("woodpick") || args[0].equalsIgnoreCase("stonepickaxe") || args[0].equalsIgnoreCase("stonepick") || args[0].equalsIgnoreCase("ironpickaxe") || args[0].equalsIgnoreCase("ironpick") ||args[0].equalsIgnoreCase("goldpickaxe") || args[0].equalsIgnoreCase("goldpick") || args[0].equalsIgnoreCase("diamondpickaxe") || args[0].equalsIgnoreCase("diamondpick") || args[0].equalsIgnoreCase("pickaxe") || args[0].equalsIgnoreCase("pick")) {
 				sender.sendMessage(ChatColor.AQUA + "----------Craftipedia----------");
 				sender.sendMessage(ChatColor.GREEN + "You will need 3 planks/cobblestone/iron ingot/gold ingot/diamond and 2 sticks.");
@@ -1461,7 +1461,7 @@ public class Craftipedia extends JavaPlugin {
 				r = 1;
 			}
 		}
-		if (r == 0) {
+		if (r == 0) { //If the result is still none, send error.
 			sender.sendMessage(ChatColor.RED + "A recipe for: " + args[0] + " was not found.");
 		} else {
 			r = 0;

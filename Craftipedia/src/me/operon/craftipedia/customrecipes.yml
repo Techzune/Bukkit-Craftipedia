@@ -1,15 +1,19 @@
-# Custom Recipes Configuration for Craftipedia v4.0
+# Custom Recipes Configuration for Craftipedia v4.1
 # !! DO NOT EDIT CONFIGVERSION !! #
 
 config:
   # Configuration Version
-  configversion: 2.0
+  configversion: 2.1
 
   # Set to true to enable Custom Crafting Recipes
   customcraftingrecipes: 'true' 
 
   # Set to true to enable Custom Furnace Recipes
   customfurnacerecipes: 'true'
+
+# Add aliases for recipes
+aliases:
+    alias: destination
 
 recipes:
   example:

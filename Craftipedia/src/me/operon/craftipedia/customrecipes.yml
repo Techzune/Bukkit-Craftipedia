@@ -1,0 +1,35 @@
+# Custom Recipes Configuration for Craftipedia v4.0
+# !! DO NOT EDIT CONFIGVERSION !! #
+
+config:
+  # Configuration Version
+  configversion: 2.0
+
+  # Set to true to enable Custom Crafting Recipes
+  customcraftingrecipes: 'true' 
+
+  # Set to true to enable Custom Furnace Recipes
+  customfurnacerecipes: 'true'
+
+recipes:
+  example:
+    # Items Needed To Craft
+    need: '1 diamond pickaxe, 2 sticks, and 2 planks' 
+
+    # Crafting Grid Rows
+    row0: 'W - -' 
+    row1: 'X S S' 
+    row2: 'W - -' 
+    
+    # Letter Definitions
+    define: 'X is diamond pickaxe.' 
+    define1: 'S is stick.' 
+    define2: 'W is planks.' 
+    define3: '' 
+    define4: '' 
+    
+    #Result of Crafting
+    result: '1 Diamond Drill' 
+
+frecipes:
+  fexample: 'Hot Dog >> Grilled Hot Dog'

@@ -1,0 +1,24 @@
+name: Craftipedia
+main: me.operon.craftipedia.Craftipedia
+version: 4.0
+commands:
+  craftipedia:
+    description: Views the version of Craftipedia.
+    permission: craftipedia.ver
+    usage: /craftipedia
+  recipe:
+    description: Requests a recipe from the list of recipes.
+    permission: craftipedia.use
+    usage: /recipe [Item/Block]
+  rc:
+    description: Requests a recipe from the list of recipes.
+    permission: craftipedia.use
+    usage: /recipe [Item/Block]
+permissions:
+  craftipedia.use:
+    description: Allows a player to use Craftipedia.
+  craftipedia.ver:
+    description: Allows the player to view the version.
+    default: op
+  craftipedia.portablecrafting:
+    description: Allows the player to use /recipe crafting.
